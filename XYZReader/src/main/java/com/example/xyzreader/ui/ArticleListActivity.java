@@ -167,21 +167,21 @@ public class ArticleListActivity extends AppCompatActivity implements
             mCursor.moveToPosition(position);
             holder.titleView.setText(mCursor.getString(ArticleLoader.Query.TITLE));
             Date publishedDate = parsePublishedDate();
-            if (!publishedDate.before(START_OF_EPOCH.getTime())) {
+            String displayDate;
 
-                holder.subtitleView.setText(Html.fromHtml(
-                        DateUtils.getRelativeTimeSpanString(
-                                publishedDate.getTime(),
-                                System.currentTimeMillis(), DateUtils.HOUR_IN_MILLIS,
-                                DateUtils.FORMAT_ABBREV_ALL).toString()
-                                + "<br/>" + " by "
-                                + mCursor.getString(ArticleLoader.Query.AUTHOR)));
+            if (!publishedDate.before(START_OF_EPOCH.getTime())) {
+                displayDate = DateUtils.getRelativeTimeSpanString(
+                        publishedDate.getTime(),
+                        System.currentTimeMillis(), DateUtils.HOUR_IN_MILLIS,
+                        DateUtils.FORMAT_ABBREV_ALL).toString();
             } else {
-                holder.subtitleView.setText(Html.fromHtml(
-                        outputFormat.format(publishedDate)
-                        + "<br/>" + " by "
-                        + mCursor.getString(ArticleLoader.Query.AUTHOR)));
+                displayDate = outputFormat.format(publishedDate);
             }
+            holder.subtitleView.setText(Html.fromHtml(
+                    displayDate + "<br/>"
+                    + getString(R.string.authored_by) + " "
+                    + mCursor.getString(ArticleLoader.Query.AUTHOR)));
+
             holder.thumbnailView.setImageUrl(
                     mCursor.getString(ArticleLoader.Query.THUMB_URL),
                     ImageLoaderHelper.getInstance(ArticleListActivity.this).getImageLoader());

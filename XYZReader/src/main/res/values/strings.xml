@@ -8,9 +8,10 @@
     <string name="action_share">Share</string>
 
     <string name="up">Up</string>
+    <string name="authored_by">by</string>
 
     <!-- test article text for viewing layout in IDE -->
-    <string name="test_article_title">The Scarlet Plague</string>
+    <string name="test_article_title">The Scarlet Plague The Scarlet Plague The Scarlet Plague The Scarlet Plague The Scarlet Plague </string>
     <string name="test_article_subtitle">1 Jan 1908\nby Yei Theodora Ozaki</string>
     <string name="test_article_body">A long article body which wraps, and is designed to test the layout of the article in Android Studio. A long article body which wraps, and is designed to test the layout of the article in Android Studio.</string>
 

@@ -1,9 +1,14 @@
 <resources>
+    <!-- list -->
+    <!-- <dimen name="toolbar_min_height">@dimen/abc_action_bar_default_height_material</dimen> -->
+    <dimen name="toolbar_min_height">56dp</dimen>
+    <!-- list_padding_top must be 4dp greater than toolbar_min_height -->
+    <dimen name="list_padding_top">60dp</dimen>
+
     <!-- detail -->
     <dimen name="detail_title_text_size">32sp</dimen>
     <dimen name="detail_body_text_size">22sp</dimen>
     <item name="detail_body_line_spacing_multiplier" format="float" type="fraction">1.25</item>
-
     <!-- TODO: Remove fab_press_translation_z if unused -->
     <dimen name="fab_press_translation_z">6dp</dimen>
     <dimen name="fab_margin">24dp</dimen>
