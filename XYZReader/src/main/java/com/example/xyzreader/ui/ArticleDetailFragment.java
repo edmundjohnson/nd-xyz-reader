@@ -227,11 +227,10 @@ public class ArticleDetailFragment extends Fragment implements
                 displayDate = outputFormat.format(publishedDate);
             }
             bylineView.setText(Html.fromHtml(
-                    displayDate + " "
-                            + getString(R.string.authored_by)
-                            + " <font color='#ffffff'>"
-                            + mCursor.getString(ArticleLoader.Query.AUTHOR)
-                            + "</font>"));
+                    getString(R.string.article_subtitle_detail,
+                            displayDate,
+                            getString(R.string.authored_by),
+                            mCursor.getString(ArticleLoader.Query.AUTHOR))));
 
             bodyView.setText(Html.fromHtml(mCursor.getString(ArticleLoader.Query.BODY).replaceAll("(\r\n|\n)", "<br />")));
             ImageLoaderHelper.getInstance(getActivity()).getImageLoader()

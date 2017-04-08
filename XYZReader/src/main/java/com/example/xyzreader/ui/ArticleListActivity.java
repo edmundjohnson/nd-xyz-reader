@@ -178,9 +178,10 @@ public class ArticleListActivity extends AppCompatActivity implements
                 displayDate = outputFormat.format(publishedDate);
             }
             holder.subtitleView.setText(Html.fromHtml(
-                    displayDate + "<br/>"
-                    + getString(R.string.authored_by) + " "
-                    + mCursor.getString(ArticleLoader.Query.AUTHOR)));
+                    getString(R.string.article_subtitle_list_item,
+                            displayDate,
+                            getString(R.string.authored_by),
+                            mCursor.getString(ArticleLoader.Query.AUTHOR))));
 
             holder.thumbnailView.setImageUrl(
                     mCursor.getString(ArticleLoader.Query.THUMB_URL),

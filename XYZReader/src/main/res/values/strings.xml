@@ -9,6 +9,10 @@
 
     <string name="up">Up</string>
     <string name="authored_by">by</string>
+    <!-- e.g. "1 Jan 1820 by Washington Berlin" -->
+    <string name="article_subtitle_list_item" translatable="false">%1$s %2$s %3$s</string>
+    <!-- e.g. "1 Jan 1820 by <font color='#ffffff'>Washington Berlin</font>" -->
+    <string name="article_subtitle_detail" translatable="false">%1$s %2$s &lt;font color=\'#ffffff\'&gt;%3$s&lt;/font&gt;</string>
 
     <!-- test article text for viewing layout in IDE -->
     <string name="test_article_title">The Scarlet Plague The Scarlet Plague The Scarlet Plague The Scarlet Plague The Scarlet Plague </string>

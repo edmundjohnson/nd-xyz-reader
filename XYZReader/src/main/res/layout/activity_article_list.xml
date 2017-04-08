@@ -1,6 +1,7 @@
 <FrameLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
@@ -20,7 +21,8 @@
             android:paddingTop="@dimen/list_padding_top"
             android:paddingLeft="@dimen/list_side_margin"
             android:paddingRight="@dimen/list_side_margin"
-            android:paddingBottom="28dp" />
+            android:paddingBottom="28dp"
+            tools:listitem="@layout/list_item_article" />
     </android.support.v4.widget.SwipeRefreshLayout>
 
     <FrameLayout

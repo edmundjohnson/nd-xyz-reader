@@ -1,0 +1,64 @@
+<FrameLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginLeft="4dp"
+    android:layout_marginRight="4dp"
+    android:layout_marginTop="4dp"
+    android:layout_marginBottom="4dp"
+    android:clickable="true"
+    android:focusable="true"
+    android:foreground="?selectableItemBackground">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:background="@android:color/white"
+        tools:ignore="UselessParent">
+
+        <TextView
+            android:id="@+id/article_title"
+            style="@style/TextAppearance.AppCompat.Subhead"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingStart="8dp"
+            android:paddingEnd="8dp"
+            android:paddingTop="16dp"
+            android:paddingBottom="16dp"
+            android:textColor="@color/article_text_title"
+            android:ellipsize="end"
+            android:maxLines="4"
+            tools:text="@string/test_article_title" />
+
+        <!--suppress AndroidLintContentDescription -->
+        <com.example.xyzreader.ui.DynamicHeightNetworkImageView
+            android:id="@+id/thumbnail"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/photo_placeholder"
+            android:scaleType="centerCrop" />
+
+        <TextView
+            android:id="@+id/article_subtitle"
+            style="@style/TextAppearance.AppCompat.Body1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingStart="8dp"
+            android:paddingEnd="8dp"
+            android:paddingTop="8dp"
+            android:paddingBottom="8dp"
+            android:textColor="@color/article_text_subtitle"
+            android:maxLines="2"
+            android:ellipsize="end"
+            tools:text="@string/test_article_subtitle" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="?android:attr/dividerHorizontal" />
+
+    </LinearLayout>
+
+</FrameLayout>

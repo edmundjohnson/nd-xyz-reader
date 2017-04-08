@@ -1,0 +1,6 @@
+<resources>
+
+    <!-- e.g. "1 Jan 1820<br/>by Washington Berlin" -->
+    <string name="article_subtitle_list_item" translatable="false">%1$s&lt;br/&gt;%2$s %3$s</string>
+
+</resources>
