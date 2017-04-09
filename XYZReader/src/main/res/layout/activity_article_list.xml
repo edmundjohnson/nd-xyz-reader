@@ -32,11 +32,11 @@
         <FrameLayout
             android:id="@+id/toolbar_container"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:minHeight="@dimen/toolbar_height"
+            android:layout_height="@dimen/appbar_height"
+            android:minHeight="?actionBarSize"
             android:background="?colorPrimary"
             android:elevation="@dimen/abc_action_bar_elevation_material"
-            app:layout_scrollFlags="scroll|enterAlways">
+            app:layout_scrollFlags="scroll|enterAlwaysCollapsed|exitUntilCollapsed">
 
             <android.support.v7.widget.Toolbar
                 android:id="@+id/toolbar"
