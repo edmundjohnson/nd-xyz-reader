@@ -1,8 +1,6 @@
 <resources>
     <!-- list -->
-    <dimen name="toolbar_min_height">112dp</dimen>
-    <!-- list_padding_top must be 4dp greater than toolbar_min_height -->
-    <dimen name="list_padding_top">116dp</dimen>
+    <dimen name="toolbar_height">112dp</dimen>
 
     <!-- detail -->
     <dimen name="detail_title_text_size">42sp</dimen>

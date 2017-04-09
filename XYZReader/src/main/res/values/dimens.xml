@@ -1,9 +1,7 @@
 <resources>
     <!-- list -->
-    <!-- <dimen name="toolbar_min_height">@dimen/abc_action_bar_default_height_material</dimen> -->
-    <dimen name="toolbar_min_height">56dp</dimen>
-    <!-- list_padding_top must be 4dp greater than toolbar_min_height -->
-    <dimen name="list_padding_top">60dp</dimen>
+    <!-- <dimen name="toolbar_height">@dimen/abc_action_bar_default_height_material</dimen> -->
+    <dimen name="toolbar_height">56dp</dimen>
 
     <!-- detail -->
     <dimen name="detail_title_text_size">32sp</dimen>
