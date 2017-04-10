@@ -1,10 +1,11 @@
 <resources>
     <!-- list -->
 
-    <!-- The app bar is small by default, but only for phones in landscape mode.
+    <!-- This comment is no longer true - the app bar is bigger everywhere.
+         The app bar is small by default, but only for phones in landscape mode.
          For portrait orientation, and larger screens, it is bigger. -->
     <!-- <dimen name="toolbar_height">@dimen/abc_action_bar_default_height_material</dimen> -->
-    <dimen name="appbar_height">56dp</dimen>
+    <dimen name="appbar_height">112dp</dimen>
 
     <!-- detail -->
     <dimen name="detail_title_text_size">32sp</dimen>
