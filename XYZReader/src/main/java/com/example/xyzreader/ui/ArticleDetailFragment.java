@@ -6,10 +6,7 @@ import android.content.Intent;
 import android.content.Loader;
 import android.database.Cursor;
 import android.graphics.Bitmap;
-import android.graphics.Color;
-import android.graphics.Rect;
 import android.graphics.Typeface;
-import android.graphics.drawable.ColorDrawable;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -47,7 +44,7 @@ public class ArticleDetailFragment extends Fragment implements
     private static final String TAG = "ArticleDetailFragment";
 
     private static final String ARG_ITEM_ID = "item_id";
-    private static final float PARALLAX_FACTOR = 1.25f;
+    //private static final float PARALLAX_FACTOR = 1.25f;
 
     private Cursor mCursor;
     private long mItemId;
@@ -156,14 +153,15 @@ public class ArticleDetailFragment extends Fragment implements
         bindViews();
 //        updateStatusBar();
 
-        // Display the up arrow in the toolbar
+        // Set the action bar to be the toolbar
         AppCompatActivity activity = getActivityCast();
         if (activity != null) {
-            Toolbar toolbar = (Toolbar) mRootView.findViewById(R.id.app_bar);
+            Toolbar toolbar = (Toolbar) mRootView.findViewById(R.id.toolbar);
             if (toolbar != null) {
                 toolbar.setTitle("");
                 activity.setSupportActionBar(toolbar);
                 ActionBar actionBar = activity.getSupportActionBar();
+                // Display the up arrow in the toolbar
                 if (actionBar != null) {
                     actionBar.setDisplayHomeAsUpEnabled(true);
                 }

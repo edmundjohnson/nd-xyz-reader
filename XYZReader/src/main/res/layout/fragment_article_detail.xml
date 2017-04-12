@@ -4,7 +4,14 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:fitsSystemWindows="true"
     tools:theme="@style/BaseTheme.Bacon">
+    <!--
+    NOTE:
+    android:fitsSystemWindows="true" is crucial for Lollipop (? certainly Marshmallow)
+    and above.
+    Without it, the app bar contents are displayed too high, and only the bottom half is visible.
+    -->
 
     <android.support.design.widget.AppBarLayout
         android:id="@+id/app_bar_layout"
@@ -16,11 +23,11 @@
             android:id="@+id/collapsing_toolbar_layout"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            app:expandedTitleMarginStart="72dp"
             app:contentScrim="?attr/colorPrimary"
             app:titleEnabled="false"
             app:layout_scrollFlags="scroll|exitUntilCollapsed">
             <!--
+            app:expandedTitleMarginStart="72dp"
             app:collapsedTitleTextAppearance="@style/TextAppearance.AppCompat.Widget.ActionBar.Title.Inverse"
             app:expandedTitleTextAppearance="@style/TextAppearance.AppCompat.Widget.ActionBar.Title.Inverse"
             -->
@@ -47,10 +54,10 @@
             </FrameLayout>
 
             <android.support.v7.widget.Toolbar
-                android:id="@+id/app_bar"
+                android:id="@+id/toolbar"
+                android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
                 android:layout_width="match_parent"
                 android:layout_height="?actionBarSize"
-                android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
                 app:contentInsetStart="72dp"
                 app:layout_collapseMode="pin">
 
