@@ -34,6 +34,7 @@
     <color name="dark_gray">#ff202020</color>
     <color name="medium_gray">#ff404040</color>
     <color name="light_gray">#6000</color>
+    <color name="transparent">#00000000</color>
 
     <!-- app bar background -->
     <color name="theme_primary">@color/green_500</color>

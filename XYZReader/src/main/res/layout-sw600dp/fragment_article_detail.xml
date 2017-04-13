@@ -13,11 +13,13 @@
     Without it, the app bar contents are displayed too high, and only the bottom half is visible.
     -->
 
+    <include layout="@layout/photo_container" />
+
     <android.support.design.widget.AppBarLayout
         android:id="@+id/app_bar_layout"
         android:layout_width="match_parent"
         android:layout_height="@dimen/detail_card_top_margin"
-        android:background="?colorPrimary">
+        android:background="@color/transparent">
 
         <android.support.design.widget.CollapsingToolbarLayout
             android:id="@+id/collapsing_toolbar_layout"
@@ -31,8 +33,6 @@
             app:collapsedTitleTextAppearance="@style/TextAppearance.AppCompat.Widget.ActionBar.Title.Inverse"
             app:expandedTitleTextAppearance="@style/TextAppearance.AppCompat.Widget.ActionBar.Title.Inverse"
             -->
-
-            <include layout="@layout/photo_container" />
 
             <include layout="@layout/toolbar" />
 
