@@ -13,10 +13,13 @@
     Without it, the app bar contents are displayed too high, and only the bottom half is visible.
     -->
 
+    <!-- android:transitionGroup="true" prevents "Layer exceeds max.
+         dimensions error -->
     <android.support.v4.widget.NestedScrollView
         android:id="@+id/scrollview"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:transitionGroup="true"
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
         <include layout="@layout/article_content"/>

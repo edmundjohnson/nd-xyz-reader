@@ -16,6 +16,7 @@ import android.support.v4.view.WindowInsetsCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.util.TypedValue;
 import android.view.View;
+import android.view.ViewTreeObserver;
 
 import com.example.xyzreader.R;
 import com.example.xyzreader.data.ArticleLoader;
@@ -132,6 +133,11 @@ public class ArticleDetailActivity extends AppCompatActivity
 //                mSelectedItemId = mStartId;
             }
         }
+
+        // Postpone the shared element enter transition.
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            postponeEnterTransition();
+        }
     }
 
     @Override
@@ -166,7 +172,38 @@ public class ArticleDetailActivity extends AppCompatActivity
         mPagerAdapter.notifyDataSetChanged();
     }
 
-//    public void onUpButtonFloorChanged(long itemId, ArticleDetailFragment fragment) {
+    /**
+     * Schedules the shared element transition to be started immediately
+     * after the shared element has been measured and laid out within the
+     * activity's view hierarchy. Some common places where it might make
+     * sense to call this method are:
+     *
+     * (1) Inside a Fragment's onCreateView() method (if the shared element
+     *     lives inside a Fragment hosted by the called Activity).
+     *
+     * (2) Inside a Picasso Callback object (if you need to wait for Picasso to
+     *     asynchronously load/scale a bitmap before the transition can begin).
+     *
+     * (3) Inside a LoaderCallback's onLoadFinished() method (if the shared
+     *     element depends on data queried by a Loader).
+     */
+    public void scheduleStartPostponedTransition(final View sharedElement) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            sharedElement.getViewTreeObserver().addOnPreDrawListener(
+                    new ViewTreeObserver.OnPreDrawListener() {
+                        @Override
+                        public boolean onPreDraw() {
+                            sharedElement.getViewTreeObserver().removeOnPreDrawListener(this);
+                            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                                startPostponedEnterTransition();
+                            }
+                            return true;
+                        }
+                    });
+        }
+    }
+
+    //    public void onUpButtonFloorChanged(long itemId, ArticleDetailFragment fragment) {
 //        if (itemId == mSelectedItemId) {
 //            mSelectedItemUpButtonFloor = fragment.getUpButtonFloor();
 //            updateUpButtonPosition();

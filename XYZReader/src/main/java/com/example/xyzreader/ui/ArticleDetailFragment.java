@@ -13,6 +13,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.GregorianCalendar;
 
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.ShareCompat;
 import android.support.v7.app.ActionBar;
@@ -49,8 +50,8 @@ public class ArticleDetailFragment extends Fragment implements
     private Cursor mCursor;
     private long mItemId;
     private View mRootView;
-//    private NestedScrollView mScrollView;
     private int mMutedColor = 0xFF333333;
+//    private NestedScrollView mScrollView;
 //    private ObservableScrollView mScrollView;
 //    private DrawInsetsFrameLayout mDrawInsetsFrameLayout;
 //    private ColorDrawable mStatusBarColorDrawable;
@@ -139,6 +140,13 @@ public class ArticleDetailFragment extends Fragment implements
 //        });
 
         mPhotoView = (ImageView) mRootView.findViewById(R.id.photo);
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            mPhotoView.setTransitionName(getString(R.string.transition_article)
+                    + String.valueOf(mItemId));
+        }
+
+
 //        mPhotoContainerView = mRootView.findViewById(R.id.photo_container);
 
 //        mStatusBarColorDrawable = new ColorDrawable(0);
@@ -303,6 +311,14 @@ public class ArticleDetailFragment extends Fragment implements
 
                         }
                     });
+
+            // schedule the shared element transition
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                if (getActivityCast() != null) {
+                    getActivityCast().scheduleStartPostponedTransition(mPhotoView);
+                }
+            }
+
         } else {
             mRootView.setVisibility(View.GONE);
             titleView.setText("N/A");

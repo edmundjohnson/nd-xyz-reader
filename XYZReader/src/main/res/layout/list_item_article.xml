@@ -17,6 +17,8 @@
         android:gravity="center_vertical"
         tools:ignore="UselessParent">
 
+        <!-- Note: The image view's transition name is set in the adapter,
+             so it can be made unique across items. -->
         <!--suppress AndroidLintContentDescription -->
         <com.example.xyzreader.ui.DynamicHeightNetworkImageView
             android:id="@+id/thumbnail"
