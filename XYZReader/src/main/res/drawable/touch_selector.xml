@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <!-- state when a row is being pressed, but hasn't yet been activated (finger down) -->
+    <item android:state_pressed="true"
+          android:drawable="@drawable/white_selectable_item_background_circle">
+    </item>
+
+    <item android:state_focused="true"
+          android:drawable="@drawable/white_selectable_item_background_circle">
+    </item>
+
+    <!-- default state -->
+    <item android:drawable="@color/list_item_background_default" />
+
+</selector>

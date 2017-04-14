@@ -6,6 +6,7 @@
     android:layout_marginTop="2dp"
     android:clickable="true"
     android:focusable="true"
+    android:background="@drawable/touch_selector"
     android:foreground="?selectableItemBackground"
     android:minHeight="?android:attr/listPreferredItemHeight">
 
@@ -13,7 +14,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:background="@android:color/white"
         android:gravity="center_vertical"
         tools:ignore="UselessParent">
 

@@ -49,6 +49,7 @@ public class ArticleDetailFragment extends Fragment implements
     private Cursor mCursor;
     private long mItemId;
     private View mRootView;
+//    private NestedScrollView mScrollView;
     private int mMutedColor = 0xFF333333;
 //    private ObservableScrollView mScrollView;
 //    private DrawInsetsFrameLayout mDrawInsetsFrameLayout;
@@ -124,6 +125,8 @@ public class ArticleDetailFragment extends Fragment implements
 //            }
 //        });
 
+//        mScrollView = (NestedScrollView) mRootView.findViewById(R.id.scrollview);
+
 //        mScrollView = (ObservableScrollView) mRootView.findViewById(R.id.scrollview);
 //        mScrollView.setCallbacks(new ObservableScrollView.Callbacks() {
 //            @Override
@@ -169,6 +172,37 @@ public class ArticleDetailFragment extends Fragment implements
         }
         return mRootView;
     }
+
+
+//    /**
+//     * Called when the fragment is visible to the user and actively running.
+//     * This is generally
+//     * tied to {@ link Activity#onResume() Activity.onResume} of the containing
+//     * Activity's lifecycle.
+//     */
+//    @Override
+//    public void onResume() {
+//        super.onResume();
+//        scrollArticleUp();
+//    }
+
+//    private void scrollArticleUp() {
+//        final int startScrollPosition =
+//                getResources().getDimensionPixelSize(R.dimen.detail_scroll_up_distance);
+//
+//        // For some reason, both these attempted ways of scrolling the article up
+//        // result in the title text being scrolled up within the "meta bar",
+//        // rather than the whole meta bar being scrolled up, so do nothing
+//
+//        mScrollView.smoothScrollBy(0, startScrollPosition);
+//
+//        Animator animator = ObjectAnimator.ofInt(
+//                mScrollView,
+//                "scrollY",
+//                startScrollPosition)
+//                .setDuration(300);
+//        animator.start();
+//    }
 
 //    private void updateStatusBar() {
 //        int color = 0;
@@ -247,6 +281,7 @@ public class ArticleDetailFragment extends Fragment implements
                             getString(R.string.authored_by),
                             mCursor.getString(ArticleLoader.Query.AUTHOR))));
 
+            //Log.d("ArticleDetailFragment", "raw text = \n" + mCursor.getString(ArticleLoader.Query.BODY));
             bodyView.setText(Html.fromHtml(mCursor.getString(ArticleLoader.Query.BODY).replaceAll("(\r\n|\n)", "<br />")));
             ImageLoaderHelper.getInstance(getActivity()).getImageLoader()
                     .get(mCursor.getString(ArticleLoader.Query.PHOTO_URL), new ImageLoader.ImageListener() {

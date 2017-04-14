@@ -19,12 +19,14 @@
     android:exitFadeDuration="100">
     <item android:state_pressed="true">
         <shape android:shape="oval">
-            <solid android:color="#3fff" />
+            <!-- 03 + green_500 -->
+            <solid android:color="#034caf50" />
         </shape>
     </item>
     <item android:state_focused="true">
         <shape android:shape="oval">
-            <solid android:color="#2fff" />
+            <!-- 02 + green_500 -->
+            <solid android:color="#024caf50" />
         </shape>
     </item>
     <item android:drawable="@android:color/transparent" />

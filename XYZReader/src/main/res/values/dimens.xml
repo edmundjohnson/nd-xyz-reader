@@ -1,10 +1,11 @@
 <resources>
-    <!-- list -->
+    <dimen name="second_keyline">72dp</dimen>
 
     <!-- <dimen name="appbar_height">@dimen/abc_action_bar_default_height_material</dimen> -->
     <dimen name="appbar_height">112dp</dimen>
 
     <!-- detail -->
+    <dimen name="detail_scroll_up_distance">30dp</dimen>
     <dimen name="detail_title_text_size">32sp</dimen>
     <dimen name="detail_body_text_size">22sp</dimen>
     <item name="detail_body_line_spacing_multiplier" format="float" type="fraction">1.25</item>
