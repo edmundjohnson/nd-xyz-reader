@@ -17,6 +17,7 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.TypedValue;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewTreeObserver;
 
@@ -162,6 +163,24 @@ public class ArticleDetailActivity extends AppCompatActivity
         if (actionBar != null) {
             actionBar.setDisplayHomeAsUpEnabled(true);
         }
+    }
+
+    /**
+     * Handle selection of a menu item.
+     * @param item the menu item selected
+     * @return false to allow normal menu processing to
+     *         proceed, true to consume it here.
+     */
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            // This allows the up arrow to reverse the shared element transition on
+            // exit from the activity.
+            case android.R.id.home:
+                supportFinishAfterTransition();
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     @Override
