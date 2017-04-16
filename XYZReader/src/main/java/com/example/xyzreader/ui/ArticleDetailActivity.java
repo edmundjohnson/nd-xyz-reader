@@ -13,7 +13,9 @@ import android.support.v4.view.OnApplyWindowInsetsListener;
 import android.support.v4.view.ViewCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v4.view.WindowInsetsCompat;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.util.TypedValue;
 import android.view.View;
 import android.view.ViewTreeObserver;
@@ -52,6 +54,11 @@ public class ArticleDetailActivity extends AppCompatActivity
 
         getLoaderManager().initLoader(0, null, this);
 
+        // Set the action bar to be the toolbar
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        initialiseAppBar(toolbar);
+
+        // Initialise the pager
         mPagerAdapter = new MyPagerAdapter(getFragmentManager());
         mPager = (ViewPager) findViewById(R.id.pager);
         mPager.setAdapter(mPagerAdapter);
@@ -137,6 +144,23 @@ public class ArticleDetailActivity extends AppCompatActivity
         // Postpone the shared element enter transition.
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             postponeEnterTransition();
+        }
+    }
+
+    /**
+     * Set the action bar to be the toolbar.
+     * @param toolbar the toolbar
+     */
+    private void initialiseAppBar(Toolbar toolbar) {
+        if (toolbar == null) {
+            return;
+        }
+        toolbar.setTitle("");
+        setSupportActionBar(toolbar);
+        ActionBar actionBar = getSupportActionBar();
+        // Display the up arrow in the toolbar
+        if (actionBar != null) {
+            actionBar.setDisplayHomeAsUpEnabled(true);
         }
     }
 

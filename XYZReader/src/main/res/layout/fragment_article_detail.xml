@@ -4,14 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:fitsSystemWindows="true"
     tools:theme="@style/BaseTheme.Bacon">
-    <!--
-    NOTE:
-    android:fitsSystemWindows="true" is crucial for Lollipop (? certainly Marshmallow)
-    and above.
-    Without it, the app bar contents are displayed too high, and only the bottom half is visible.
-    -->
 
     <!-- android:transitionGroup="true" prevents "Layer exceeds max.
          dimensions error -->
@@ -36,6 +29,7 @@
             android:id="@+id/collapsing_toolbar_layout"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:minHeight="?actionBarSize"
             app:contentScrim="?attr/colorPrimary"
             app:titleEnabled="false"
             app:layout_scrollFlags="scroll|exitUntilCollapsed">
@@ -46,8 +40,6 @@
             -->
 
             <include layout="@layout/photo_container" />
-
-            <include layout="@layout/toolbar" />
 
         </android.support.design.widget.CollapsingToolbarLayout>
     </android.support.design.widget.AppBarLayout>

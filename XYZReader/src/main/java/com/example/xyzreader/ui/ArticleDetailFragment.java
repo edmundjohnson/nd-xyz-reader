@@ -16,10 +16,7 @@ import java.util.GregorianCalendar;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.ShareCompat;
-import android.support.v7.app.ActionBar;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.graphics.Palette;
-import android.support.v7.widget.Toolbar;
 import android.text.Html;
 import android.text.format.DateUtils;
 import android.text.method.LinkMovementMethod;
@@ -164,20 +161,6 @@ public class ArticleDetailFragment extends Fragment implements
         bindViews();
 //        updateStatusBar();
 
-        // Set the action bar to be the toolbar
-        AppCompatActivity activity = getActivityCast();
-        if (activity != null) {
-            Toolbar toolbar = (Toolbar) mRootView.findViewById(R.id.toolbar);
-            if (toolbar != null) {
-                toolbar.setTitle("");
-                activity.setSupportActionBar(toolbar);
-                ActionBar actionBar = activity.getSupportActionBar();
-                // Display the up arrow in the toolbar
-                if (actionBar != null) {
-                    actionBar.setDisplayHomeAsUpEnabled(true);
-                }
-            }
-        }
         return mRootView;
     }
 

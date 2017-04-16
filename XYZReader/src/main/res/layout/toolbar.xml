@@ -6,8 +6,7 @@
     android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
     android:layout_width="match_parent"
     android:layout_height="?actionBarSize"
-    app:contentInsetStart="@dimen/second_keyline"
-    app:layout_collapseMode="pin">
+    app:contentInsetStart="@dimen/second_keyline">
 
     <ImageView
         android:layout_width="wrap_content"
