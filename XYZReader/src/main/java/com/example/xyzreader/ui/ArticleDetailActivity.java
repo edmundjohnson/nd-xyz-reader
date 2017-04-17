@@ -1,14 +1,17 @@
 package com.example.xyzreader.ui;
 
+import android.annotation.TargetApi;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.LoaderManager;
+import android.content.Intent;
 import android.content.Loader;
 import android.database.Cursor;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v13.app.FragmentStatePagerAdapter;
+import android.support.v4.app.SharedElementCallback;
 import android.support.v4.view.OnApplyWindowInsetsListener;
 import android.support.v4.view.ViewCompat;
 import android.support.v4.view.ViewPager;
@@ -19,11 +22,15 @@ import android.support.v7.widget.Toolbar;
 import android.util.TypedValue;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
 
 import com.example.xyzreader.R;
 import com.example.xyzreader.data.ArticleLoader;
 import com.example.xyzreader.data.ItemsContract;
+
+import java.util.List;
+import java.util.Map;
 
 /**
  * An activity representing a single Article detail screen, letting you swipe between articles.
@@ -42,6 +49,62 @@ public class ArticleDetailActivity extends AppCompatActivity
     private MyPagerAdapter mPagerAdapter;
 //    private View mUpButtonContainer;
 //    private View mUpButton;
+
+    private ArticleDetailFragment mCurrentDetailFragment;
+
+    // The shared transition name passed back to the list activity.
+    private String mTransitionName;
+
+    //---------------------------------------------------------------------------------
+    // Listeners
+
+    private final ViewPager.OnPageChangeListener mPageChangeListener =
+            new ViewPager.SimpleOnPageChangeListener() {
+//            @Override
+//            public void onPageScrollStateChanged(int state) {
+//                super.onPageScrollStateChanged(state);
+//                mUpButton.animate()
+//                        .alpha((state == ViewPager.SCROLL_STATE_IDLE) ? 1f : 0f)
+//                        .setDuration(300);
+//            }
+
+                @Override
+                public void onPageSelected(int position) {
+                    if (mCursor != null) {
+                        mCursor.moveToPosition(position);
+//                    mSelectedItemId = mCursor.getLong(ArticleLoader.Query._ID);
+                        // Update the shared element transition name to be passed back to the list.
+                        mTransitionName = getString(R.string.transition_article)
+                                + String.valueOf(mCursor.getLong(ArticleLoader.Query._ID));
+
+                    }
+//                updateUpButtonPosition();
+                }
+            };
+
+    private final SharedElementCallback mSharedElementCallback = new SharedElementCallback() {
+        @TargetApi(Build.VERSION_CODES.LOLLIPOP)
+        @Override
+        public void onMapSharedElements(List<String> names, Map<String, View> sharedElements) {
+            if (mCurrentDetailFragment == null) {
+                names.clear();
+                sharedElements.clear();
+            } else {
+                View sharedElement = mCurrentDetailFragment.getSharedElement();
+                if (sharedElement != null) {
+                    // Remove the old shared element and replace it with the new shared element
+                    // that should be transitioned instead.
+                    names.clear();
+                    names.add(sharedElement.getTransitionName());
+                    sharedElements.clear();
+                    sharedElements.put(sharedElement.getTransitionName(), sharedElement);
+                }
+            }
+        }
+    };
+
+    //---------------------------------------------------------------------------------
+    // Lifecycle methods
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,24 +130,7 @@ public class ArticleDetailActivity extends AppCompatActivity
                 .applyDimension(TypedValue.COMPLEX_UNIT_DIP, 1, getResources().getDisplayMetrics()));
         mPager.setPageMarginDrawable(new ColorDrawable(0x22000000));
 
-        mPager.addOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener() {
-//            @Override
-//            public void onPageScrollStateChanged(int state) {
-//                super.onPageScrollStateChanged(state);
-//                mUpButton.animate()
-//                        .alpha((state == ViewPager.SCROLL_STATE_IDLE) ? 1f : 0f)
-//                        .setDuration(300);
-//            }
-
-            @Override
-            public void onPageSelected(int position) {
-                if (mCursor != null) {
-                    mCursor.moveToPosition(position);
-//                    mSelectedItemId = mCursor.getLong(ArticleLoader.Query._ID);
-                }
-//                updateUpButtonPosition();
-            }
-        });
+        mPager.addOnPageChangeListener(mPageChangeListener);
 
         // This setOnApplyWindowInsetsListener(...) fixes an issue where scrolling back through
         // the detail fragments causes the window insets to be lost (though scrolling forwards
@@ -142,11 +188,24 @@ public class ArticleDetailActivity extends AppCompatActivity
             }
         }
 
-        // Postpone the shared element enter transition.
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            // Postpone the shared element enter transition.
             postponeEnterTransition();
+
+            setEnterSharedElementCallback(mSharedElementCallback);
         }
     }
+
+    @Override
+    public void finishAfterTransition() {
+        Intent data = new Intent();
+        data.putExtra(ArticleListActivity.KEY_SHARED_TRANSITION_NAME, mTransitionName);
+        setResult(RESULT_OK, data);
+        super.finishAfterTransition();
+    }
+
+    //---------------------------------------------------------------------------------
+    // Navigation methods
 
     /**
      * Set the action bar to be the toolbar.
@@ -183,6 +242,9 @@ public class ArticleDetailActivity extends AppCompatActivity
         return super.onOptionsItemSelected(item);
     }
 
+    //---------------------------------------------------------------------------------
+    // Loader methods
+
     @Override
     public Loader<Cursor> onCreateLoader(int i, Bundle bundle) {
         return ArticleLoader.newAllArticlesInstance(this);
@@ -214,6 +276,9 @@ public class ArticleDetailActivity extends AppCompatActivity
         mCursor = null;
         mPagerAdapter.notifyDataSetChanged();
     }
+
+    //---------------------------------------------------------------------------------
+    // Shared element transition methods
 
     /**
      * Schedules the shared element transition to be started immediately
@@ -258,20 +323,23 @@ public class ArticleDetailActivity extends AppCompatActivity
 //        mUpButton.setTranslationY(Math.min(mSelectedItemUpButtonFloor - upButtonNormalBottom, 0));
 //    }
 
+    //---------------------------------------------------------------------------------
+    // Pager Adapter
+
     private class MyPagerAdapter extends FragmentStatePagerAdapter {
         public MyPagerAdapter(FragmentManager fm) {
             super(fm);
         }
 
-//        @Override
-//        public void setPrimaryItem(ViewGroup container, int position, Object object) {
-//            super.setPrimaryItem(container, position, object);
-//            ArticleDetailFragment fragment = (ArticleDetailFragment) object;
-//            if (fragment != null) {
+        @Override
+        public void setPrimaryItem(ViewGroup container, int position, Object object) {
+            super.setPrimaryItem(container, position, object);
+            mCurrentDetailFragment = (ArticleDetailFragment) object;
+//            if (mCurrentDetailsFragment != null) {
 //                mSelectedItemUpButtonFloor = fragment.getUpButtonFloor();
 //                updateUpButtonPosition();
 //            }
-//        }
+        }
 
         @Override
         public Fragment getItem(int position) {

@@ -310,6 +310,10 @@ public class ArticleDetailFragment extends Fragment implements
         }
     }
 
+    public View getSharedElement() {
+        return mPhotoView;
+    }
+
     @Override
     public Loader<Cursor> onCreateLoader(int i, Bundle bundle) {
         return ArticleLoader.newInstanceForItemId(getActivity(), mItemId);

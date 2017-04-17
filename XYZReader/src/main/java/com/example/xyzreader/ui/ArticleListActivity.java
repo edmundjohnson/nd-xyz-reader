@@ -1,5 +1,6 @@
 package com.example.xyzreader.ui;
 
+import android.annotation.TargetApi;
 import android.app.ActivityOptions;
 import android.app.LoaderManager;
 import android.content.BroadcastReceiver;
@@ -11,6 +12,7 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.v4.app.SharedElementCallback;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
@@ -20,6 +22,7 @@ import android.text.format.DateUtils;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewTreeObserver;
 import android.widget.TextView;
 
 import com.example.xyzreader.R;
@@ -31,6 +34,8 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.GregorianCalendar;
+import java.util.List;
+import java.util.Map;
 
 /**
  * An activity representing a list of Articles. This activity has different presentations for
@@ -40,6 +45,9 @@ import java.util.GregorianCalendar;
  */
 public class ArticleListActivity extends AppCompatActivity implements
         LoaderManager.LoaderCallbacks<Cursor> {
+
+    /** Key for the shared transition name passed passed back from the detail activity. */
+    public static final String KEY_SHARED_TRANSITION_NAME = "KEY_SHARED_TRANSITION_NAME";
 
     private static final String TAG = ArticleListActivity.class.toString();
     //private Toolbar mToolbar;
@@ -51,6 +59,59 @@ public class ArticleListActivity extends AppCompatActivity implements
     private final SimpleDateFormat outputFormat = new SimpleDateFormat();
     // Most time functions can only handle 1902 - 2037
     private final GregorianCalendar START_OF_EPOCH = new GregorianCalendar(2,1,1);
+
+    // The shared transition name passed back from the detail activity.
+    private String mTransitionName;
+
+    //---------------------------------------------------------------------------------------
+    // Listeners
+
+    private final SharedElementCallback mSharedElementCallback
+            = new SharedElementCallback() {
+        /**
+         * Adjust the mapping of shared element names to Views.
+         * Set the mapping to include only the shared elements for the selected page.
+         * @param names The names of all shared elements transferred from the calling Activity
+         *              or Fragment in the order they were provided.
+         * @param sharedElements The mapping of shared element names to Views. The best guess
+         *                       will be filled into sharedElements based on the transitionNames.
+         */
+        @Override
+        public void onMapSharedElements(List<String> names, Map<String, View> sharedElements) {
+//                if (mTmpReenterState != null) {
+//                    int startingPosition = mTmpReenterState.getInt(EXTRA_STARTING_ALBUM_POSITION);
+//                    int currentPosition = mTmpReenterState.getInt(EXTRA_CURRENT_ALBUM_POSITION);
+//                    if (startingPosition != currentPosition) {
+//                        // If startingPosition != currentPosition the user must have swiped to a
+//                        // different page in the detail activity. We must update the shared
+//                        // element so that the correct one falls into place.
+//                        String newTransitionName = ALBUM_NAMES[currentPosition];
+//                        View newSharedElement = mRecyclerView.findViewWithTag(newTransitionName);
+//                        if (newSharedElement != null) {
+//                            names.clear();
+//                            names.add(newTransitionName);
+//                            sharedElements.clear();
+//                            sharedElements.put(newTransitionName, newSharedElement);
+//                        }
+//                    }
+//
+//                    mTmpReenterState = null;
+//                }
+            if (mTransitionName != null) {
+                View sharedElement = mRecyclerView.findViewWithTag(mTransitionName);
+                if (sharedElement != null) {
+                    names.clear();
+                    names.add(mTransitionName);
+                    sharedElements.clear();
+                    sharedElements.put(mTransitionName, sharedElement);
+                }
+                mTransitionName = null;
+            }
+        }
+    };
+
+    //---------------------------------------------------------------------------------------
+    // Activity lifecycle methods
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,7 +129,55 @@ public class ArticleListActivity extends AppCompatActivity implements
         if (savedInstanceState == null) {
             refresh();
         }
+
+        setExitSharedElementCallback(mSharedElementCallback);
     }
+
+    /**
+     * Called when an activity you launched with an activity transition exposes this
+     * Activity through a returning activity transition, giving you the resultCode
+     * and any additional data from it. This method will only be called if the activity
+     * set a result code other than {@link #RESULT_CANCELED} and it supports activity
+     * transitions.
+     * See:     https://github.com/alexjlockwood/adp-activity-transitions
+     *
+     * @param resultCode The integer result code returned by the child activity
+     *                   through its setResult().
+     * @param data An Intent, which can return result data to the caller
+     *               (various data can be attached to Intent "extras").
+     */
+    @Override
+    public void onActivityReenter(int resultCode, Intent data) {
+        super.onActivityReenter(resultCode, data);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            mTransitionName = data.getStringExtra(KEY_SHARED_TRANSITION_NAME);
+
+//            int currentPosition = RecyclerView.NO_POSITION;
+//            if (mTransitionName != null) {
+//                View sharedElement = mRecyclerView.findViewWithTag(mTransitionName);
+//                // next line doesn't work - maybe pass position back from detail activity instead
+//                currentPosition = mRecyclerView.getChildLayoutPosition(sharedElement);
+//                mRecyclerView.scrollToPosition(currentPosition);
+//            }
+
+            postponeEnterTransition();
+            mRecyclerView.getViewTreeObserver().addOnPreDrawListener(new ViewTreeObserver.OnPreDrawListener() {
+                @TargetApi(Build.VERSION_CODES.LOLLIPOP)
+                @Override
+                public boolean onPreDraw() {
+                    mRecyclerView.getViewTreeObserver().removeOnPreDrawListener(this);
+                    // TODO: figure out why it is necessary to request layout here in order to get a smooth transition.
+                    mRecyclerView.requestLayout();
+                    startPostponedEnterTransition();
+                    return true;
+                }
+            });
+        }
+
+    }
+
+    //---------------------------------------------------------------------------------------
+    // Refresh list methods
 
     private void refresh() {
         startService(new Intent(this, UpdaterService.class));
@@ -103,6 +212,9 @@ public class ArticleListActivity extends AppCompatActivity implements
         mSwipeRefreshLayout.setRefreshing(mIsRefreshing);
     }
 
+    //---------------------------------------------------------------------------------------
+    // Loader methods
+
     @Override
     public Loader<Cursor> onCreateLoader(int i, Bundle bundle) {
         return ArticleLoader.newAllArticlesInstance(this);
@@ -123,6 +235,9 @@ public class ArticleListActivity extends AppCompatActivity implements
     public void onLoaderReset(Loader<Cursor> loader) {
         mRecyclerView.setAdapter(null);
     }
+
+    //---------------------------------------------------------------------------------------
+    // Adapter
 
     private class Adapter extends RecyclerView.Adapter<ViewHolder> {
         private Cursor mCursor;
@@ -201,8 +316,11 @@ public class ArticleListActivity extends AppCompatActivity implements
 
             // Set the transition name
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                holder.thumbnailView.setTransitionName(getString(R.string.transition_article)
-                        + String.valueOf(mCursor.getLong(ArticleLoader.Query._ID)));
+                String transitionName = getString(R.string.transition_article)
+                        + String.valueOf(mCursor.getLong(ArticleLoader.Query._ID));
+                holder.thumbnailView.setTransitionName(transitionName);
+                // Set the tag so the view can be found when the list activity is returned to.
+                holder.thumbnailView.setTag(transitionName);
             }
         }
 
