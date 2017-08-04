@@ -10,8 +10,7 @@
     android:layout_gravity="center_horizontal"
     android:maxWidth="@dimen/detail_card_max_width"
     android:background="@color/article_background"
-    android:elevation="2dp"
-    tools:showIn="@layout/fragment_article_detail">
+    android:elevation="2dp">
 
     <LinearLayout
         android:id="@+id/meta_bar"
@@ -36,14 +35,16 @@
             android:textColor="#fff"
             android:textStyle="bold"
             android:textSize="@dimen/detail_title_text_size"
-            android:lineSpacingMultiplier="0.9"/>
+            android:lineSpacingMultiplier="0.9"
+            tools:text="@string/test_article_title" />
 
         <TextView
             android:id="@+id/article_byline"
             style="?android:attr/textAppearanceSmall"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textColor="#8fff"/>
+            android:textColor="#8fff"
+            tools:text="@string/test_article_subtitle" />
     </LinearLayout>
 
     <TextView
